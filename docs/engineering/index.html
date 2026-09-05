@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Engineering — SC-WBD</title>
-<meta name="description" content="Implementation notes on the SC-WBD state layout, the orientation result, the registration path, and the identifiability work.">
+<meta name="description" content="How the released models represent brain state, fit observations and test predictions. Implementation guides, measured tradeoffs and known limits.">
 <meta name="color-scheme" content="light dark">
 <meta property="og:title" content="Engineering — SC-WBD">
-<meta property="og:description" content="Implementation notes on the SC-WBD state layout, the orientation result, the registration path, and the identifiability work.">
+<meta property="og:description" content="How the released models represent brain state, fit observations and test predictions. Implementation guides, measured tradeoffs and known limits.">
 <meta property="og:type" content="website">
 <link rel="stylesheet" href="../static/style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='none'/><rect x='2' y='9' width='2' height='5'/><rect x='5.5' y='5' width='2' height='9'/><rect x='9' y='7' width='2' height='7'/><rect x='12.5' y='2' width='2' height='12'/></svg>">
@@ -32,166 +32,166 @@
 </header>
 
 <main>
+<nav class="railnav" aria-label="Sections on this page">
+  <ol>
+    <li><a href="#start-with-a-released-model" data-rail="start-with-a-released-model"><span class="rail-label">Start with a released model</span></a></li>
+    <li><a href="#representing-state-and-observations" data-rail="representing-state-and-observations"><span class="rail-label">Representing state and observ…</span></a></li>
+    <li><a href="#fitting-and-evaluating-predictions" data-rail="fitting-and-evaluating-predictions"><span class="rail-label">Fitting and evaluating predic…</span></a></li>
+    <li><a href="#implementation-limits-and-reliability" data-rail="implementation-limits-and-reliability"><span class="rail-label">Implementation limits and rel…</span></a></li>
+    <li><a href="#a-practical-review-checklist" data-rail="a-practical-review-checklist"><span class="rail-label">A practical review checklist</span></a></li>
+  </ol>
+</nav>
 
   <div class="wrap">
     <div class="pagehead">
-      <h1>Engineering notes</h1>
-      <p class="standfirst">Implementation notes from building SC-WBD — the state layout, the registration path, the identifiability work, and the defects found along the way.</p>
+      <h1>Engineering</h1>
+      <p class="standfirst">How the models are built, what the experiments establish, and where the implementation still falls short.</p>
 
     </div>
 <div class="prose">
 <section class="chapter chapter-intro" id="engineering-index-top">
 
 
-<p class="lede">Implementation notes on the parts of SC-WBD that were hard to
-build: what the state carries and why, how fMRI gets into parcel space, and what
-the identifiability work measured. Every number is traceable to a committed
-file.</p>
+<p class="lede">SC-WBD connects regional dynamics to recordings through explicit
+geometry, observation models and clocks. These notes explain the implementation
+choices and the experiments that tested them. Start with a runnable release, then
+follow the topics relevant to your work.</p>
+</section>
+<section class="chapter" id="start-with-a-released-model">
+<h2>Start with a released model</h2>
+
+
+<p><a href="../releases/bwin-eeg-001.html">bWIN EEG 001</a> is the smallest
+self-contained starting point: a source wheel, trained weights and a synthetic
+example for 24-to-64-sample EEG forecasting. The release documents the exact
+channel order, preprocessing and inference recipe, alongside statistical and
+community-model comparisons. Its installed CPU example reproduces without the
+development repository or training data.</p>
+
+<p>For the integrated model, use the
+<a href="https://huggingface.co/jacob-valdez/scwbd-004">SC-WBD-004 checkpoint</a>
+and <a href="https://github.com/JacobFV/sc-wbd">source repository</a>.
+The <a href="../index.html#results">results page</a> summarizes each release's
+training and measured limits. bWIN and SC-WBD are separate architectures;
+check the input contract before comparing or reusing their outputs.</p>
+</section>
+<section class="chapter tinted" id="representing-state-and-observations">
+<h2>Representing state and observations</h2>
+
 
 <ul class="cards">
-
 <li><a href="resolution-pair.html">
   <span class="card-num">01</span>
-  <span class="card-title">One number per parcel carries 32.1% of the EEG
-  observable; three carry 83.4%</span>
-  <p class="card-desc">Measured on the model's own 400 cortical parcels, with a
-  real boundary-element lead field. Orientation is the largest single win, at
-  2.6&times;, and the cheapest: 1,200 oriented numbers carry more than 3,154
-  subdivided scalars do. The same pair on a 68-parcel atlas reads 5.6% against
-  51.7% &mdash; a factor of nine that this project quoted as its own for two
-  runs.</p>
+  <span class="card-title">Orientation and spatial resolution</span>
+  <p class="card-desc">On the model's 400 cortical parcels, one scalar per parcel
+  carries 32.1% of the EEG observable; three oriented components carry 83.4%.
+  The experiment separates gains from orientation and spatial subdivision.</p>
 </a></li>
-
 <li><a href="support-algebra.html">
   <span class="card-num">02</span>
-  <span class="card-title">Two montages are two views of one carrier</span>
-  <p class="card-desc">What it takes to compose observations that disagree about
-  sampling, support and units: element types with a rank and a component frame,
-  point-spread composition in quadrature, and relations typed as restriction or
-  prolongation with <em>lossy</em> and <em>invents</em> tracked separately.</p>
+  <span class="card-title">Combining observations across montages</span>
+  <p class="card-desc">How supports, units and component frames describe two
+  instruments observing one state. Restriction and prolongation record what a
+  transform loses and what it introduces.</p>
 </a></li>
-
 <li><a href="second-modality.html">
   <span class="card-num">03</span>
-  <span class="card-title">Getting fMRI into parcel space</span>
-  <p class="card-desc">The EPI &larr; T1w &larr; template registration chain, run
-  per subject and reused across that subject's runs. 55 runs, 10 subjects,
-  coverage 0.89&ndash;1.00 &mdash; genuinely per-run, so a global mask would be
-  wrong for six of ten. Uncovered parcels are <code>NaN</code> and marginalised,
-  never zero.</p>
+  <span class="card-title">Registering fMRI into parcel space</span>
+  <p class="card-desc">The EPI–T1w–template chain, evaluated on 55 runs from ten
+  people. Coverage ranges from 0.89 to 1.00; per-run masks keep uncovered parcels
+  out of the likelihood.</p>
 </a></li>
-
-<li><a href="posterior-collapse.html">
-  <span class="card-num">04</span>
-  <span class="card-title">Three ways to break a density</span>
-  <p class="card-desc">The amortised posterior is a normalizing flow, and flows
-  fail in ways a point estimator cannot. What each failure looks like in the
-  metrics, and the learning-rate separation that keeps the flow stable while the
-  rest of the model moves.</p>
-</a></li>
-
-<li><a href="variance-channel.html">
-  <span class="card-num">05</span>
-  <span class="card-title">Isolating the variance channel</span>
-  <p class="card-desc">A model can win the conditional mean and still lose the
-  log score if its uncertainty is wrong. Separating the two, and what it showed
-  about where run 1's loss actually came from.</p>
-</a></li>
-
-<li><a href="identifiability-verdict.html">
-  <span class="card-num">06</span>
-  <span class="card-title">The identifiability benchmark returned a verdict</span>
-  <p class="card-desc">Three regions, linear-Gaussian, five designs, a decision
-  rule written before the run. C1 &mdash; that joint native-clock fusion beats
-  the better single modality by 1.05&times; &mdash; never passes. C2 and C3 pass
-  where the problem is hard and fail where it is easy. Two criteria are
-  unevaluated because the reference regime's truth sits exactly on the prior
-  mean, where ignoring the data scores perfectly.</p>
-</a></li>
-
-<li><a href="control-arm.html">
-  <span class="card-num">07</span>
-  <span class="card-title">We built the control arm of our own ablation</span>
-  <p class="card-desc">The paper's first required comparison is structured
-  regional state against one pooled vector per region. A narrowing declared in
-  an architecture document and nowhere else meant we built the second, gave it
-  the name of the first, and measured it losing. The undeclared part was the
-  defect, not the narrowing.</p>
-</a></li>
-
-<li><a href="decorative-guards.html">
-  <span class="card-num">08</span>
-  <span class="card-title">Checks that cannot fail</span>
-  <p class="card-desc">A guard is decorative when its reading is constant with
-  respect to the question being asked. It still produces output, and the output
-  still looks like evidence. A catalogue of the ones that were green, plausible
-  and load-bearing.</p>
-</a></li>
-
-<li><a href="declared-narrowings.html">
-  <span class="card-num">09</span>
-  <span class="card-title">Where the implementation is narrower than the paper</span>
-  <p class="card-desc">An append-only register of every place the two diverge,
-  with the standing rulings that bind more than one contributor. A stated
-  narrowing is a decision that can be attacked; an unstated one is invisible to
-  a process built out of attacking stated things.</p>
-</a></li>
-
-<li><a href="infrastructure.html">
-  <span class="card-num">10</span>
-  <span class="card-title">The failures that were not science</span>
-  <p class="card-desc">A trailing slash that could not match a symlink, an
-  exception swallowed by a bare <code>except</code>, a provenance field that
-  could never read clean. None is a modelling problem; all of them cost more
-  time than the modelling problems did.</p>
-</a></li>
-
-<li><a href="appendix-defects.html">
-  <span class="card-num">A</span>
-  <span class="card-title">Appendix: defects and the checks that now catch them</span>
-  <p class="card-desc">A condensed register &mdash; the card patterns that named
-  modules which no longer existed, the permission flag nothing read, the
-  instruments that failed silently. Each with the test that fires if it
-  returns.</p>
-</a></li>
-
 </ul>
 </section>
-<section class="chapter" id="the-one-heuristic-worth-taking-away">
-<h2>The one heuristic worth taking away</h2>
+<section class="chapter" id="fitting-and-evaluating-predictions">
+<h2>Fitting and evaluating predictions</h2>
 
 
-<p>If you read nothing else here, take this. It found two of the most expensive
-defects in the list above, before either instrument had ever been run, and it
-costs nothing:</p>
+<ul class="cards">
+<li><a href="../releases/bwin-eeg-001.html">
+  <span class="card-num">04</span>
+  <span class="card-title">A reproducible EEG forecasting comparison</span>
+  <p class="card-desc">bWIN, AR16, VAR4 and two community architecture adaptations
+  on the same 25-person test, plus a separate five-person WBD comparison.
+  Training histories, paired intervals and context controls show where the
+  learned dynamics help and where simpler models perform better.</p>
+</a></li>
+<li><a href="posterior-collapse.html">
+  <span class="card-num">05</span>
+  <span class="card-title">Training a conditional posterior</span>
+  <p class="card-desc">Three normalizing-flow failure modes, their signatures in
+  the metrics, and the effect of separating posterior and model learning rates.
+  Conditioning and calibration require their own measurements.</p>
+</a></li>
+<li><a href="variance-channel.html">
+  <span class="card-num">06</span>
+  <span class="card-title">Point accuracy and uncertainty</span>
+  <p class="card-desc">Separating mean prediction from variance estimation to
+  locate run 1's error. A Gaussian log score depends on both; report it alongside
+  point error.</p>
+</a></li>
+<li><a href="identifiability-verdict.html">
+  <span class="card-num">07</span>
+  <span class="card-title">What the identifiability benchmark resolved</span>
+  <p class="card-desc">Five experimental designs in a three-region linear-Gaussian
+  model. The registered fusion criterion never passes; other criteria depend on
+  regime, and two cannot be evaluated with the chosen reference truth.</p>
+</a></li>
+</ul>
+</section>
+<section class="chapter tinted" id="implementation-limits-and-reliability">
+<h2>Implementation limits and reliability</h2>
 
-<div class="callout">
-<span class="callout-label">The operational check</span>
-<p>For every quantity your code names as varying, ask <strong>what it is a
-function of</strong> — and read the answer off the expression rather than the
-docstring. If the expression's free variables do not include the thing it claims
-to depend on, it is decorative. No run required, no data required.</p>
-</div>
 
-<p>The companion question, for guards specifically:</p>
+<ul class="cards">
+<li><a href="control-arm.html">
+  <span class="card-num">08</span>
+  <span class="card-title">Structured state versus a pooled representation</span>
+  <p class="card-desc">How the first implementation became the control arm of its
+  intended ablation, and what that means for interpreting the measured result.</p>
+</a></li>
+<li><a href="declared-narrowings.html">
+  <span class="card-num">09</span>
+  <span class="card-title">Where code and architecture differ</span>
+  <p class="card-desc">The documented gaps between the proposed architecture and
+  executed code. Use this register to establish which mechanisms a result
+  actually exercises.</p>
+</a></li>
+<li><a href="decorative-guards.html">
+  <span class="card-num">10</span>
+  <span class="card-title">Testing whether a check detects its failure</span>
+  <p class="card-desc">Examples of checks that stayed green while the quantity
+  they were meant to test changed, and how to expose that blind spot.</p>
+</a></li>
+<li><a href="infrastructure.html">
+  <span class="card-num">11</span>
+  <span class="card-title">Data paths, errors and provenance</span>
+  <p class="card-desc">Practical failures in file matching, exception handling
+  and checkpoint provenance that affected what training and evaluation ran.</p>
+</a></li>
+<li><a href="appendix-defects.html">
+  <span class="card-num">12</span>
+  <span class="card-title">Defect and regression-check reference</span>
+  <p class="card-desc">A compact register linking known defects to the checks
+  that detect their recurrence.</p>
+</a></li>
+</ul>
+</section>
+<section class="chapter" id="a-practical-review-checklist">
+<h2>A practical review checklist</h2>
 
-<div class="callout">
-<span class="callout-label">The companion check</span>
-<p>Take the failure this guard exists to catch. Apply it to the guard's input.
-<strong>Does the reading move?</strong> If not, the guard is decorative —
-however sound its mechanism, however green its tests, and especially if it has
-never been run.</p>
-</div>
 
-<p>And the corollary that is harder to see, because from inside the apparatus
-every check is green and every check is correct:</p>
-
-<blockquote>
-<p>Ask of any guard not only <em>“can it fire”</em> but <strong>“is the failure
-it targets representable in the model it runs against”</strong>. A verification
-apparatus built on a surrogate inherits the surrogate's assumptions as blind
-spots.</p>
-</blockquote>
+<ul>
+<li><strong>Trace the dependency.</strong> A quantity described as conditional on
+an input must depend on that input in the executed expression.</li>
+<li><strong>Exercise the failure.</strong> Apply the error a check is meant to
+catch and confirm that its output changes.</li>
+<li><strong>Match the claim to the experiment.</strong> Record the cohort,
+preprocessing, baseline and uncertainty; a simulated example establishes only
+what its assumptions allow.</li>
+<li><strong>Replay the artifact.</strong> Install the distributed package and
+reproduce an example outside the development checkout.</li>
+</ul>
 </section>
 </div>
 

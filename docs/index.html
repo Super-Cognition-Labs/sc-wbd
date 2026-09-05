@@ -75,20 +75,7 @@ reads the <strong>same shared state</strong>, through its own physics, on its ow
 </div>
 </div>
 </section>
-<section class="chapter" id="new-bwin-eeg-001-and-a-matched-comparison">
-<h2>New: bWIN EEG 001 and a matched comparison</h2>
-
-<p>A task-specific WIN model forecasts 64 future EEG samples from 24 observed
-samples. On 25 held-out people it improves over zero, while fitted linear and
-community neural alternatives have lower average error. Both SC-WBD-003 and
-SC-WBD-004 perform better on the five people held out by both checkpoints.
-This is a measured comparison of separate research artifacts, not a claim that
-the new model supersedes the integrated predecessors.</p>
-<p><a href="releases/bwin-eeg-001.html">Read the results, actual-data figure,
-community comparison and IBM-1 handoff</a> ·
-<a href="https://huggingface.co/brandonin/bwin-eeg-001">Checkpoint and source</a></p>
-</section>
-<section class="chapter tinted" id="the-world-s-first-whole-brain-dynamics-wbd-model">
+<section class="chapter" id="the-world-s-first-whole-brain-dynamics-wbd-model">
 <h2>The World's First Whole Brain Dynamics (WBD) Model</h2>
 
 
@@ -332,6 +319,19 @@ thing.</p>
   <div><span class="n pass">4</span><span class="l">field solvers validated<br>against closed-form solutions, to <strong>1.3%</strong> or better</span></div>
 </div>
 </section>
+<section class="chapter tinted" id="new-bwin-eeg-001-and-a-matched-comparison">
+<h2>New: bWIN EEG 001 and a matched comparison</h2>
+
+<p>A task-specific WIN model forecasts 64 future EEG samples from 24 observed
+samples. On 25 held-out people it improves over zero, while fitted linear and
+community neural alternatives have lower average error. Both SC-WBD-003 and
+SC-WBD-004 perform better on the five people held out by both checkpoints.
+This is a measured comparison of separate research artifacts, not a claim that
+the new model supersedes the integrated predecessors.</p>
+<p><a href="releases/bwin-eeg-001.html">Read the results, actual-data figure,
+and comparisons with released models</a> ·
+<a href="https://huggingface.co/brandonin/bwin-eeg-001">Checkpoint and source</a></p>
+</section>
 <section class="chapter" id="modelling-brain-activity">
 <h2>Modelling brain activity</h2>
 
@@ -443,9 +443,10 @@ reachable, in the order it becomes reachable.</p>
 <h2>Results</h2>
 
 
-<p>Four models are trained and public. Each is larger than the one before it and
-each is scored on participants held out of its own training, against the same
-bench of statistical baselines.</p>
+<p>Five trained models are public: SC-WBD-001 through 004 and the smaller,
+EEG-specific bWIN EEG 001. The scores below come from each release's own evaluation.
+For a shared-cohort comparison, see the
+<a href="releases/bwin-eeg-001.html">matched bWIN and SC-WBD results</a>.</p>
 
 <div class="runstack">
   <figure class="run" style="--w: 0.3934">
@@ -496,30 +497,34 @@ bench of statistical baselines.</p>
       <span class="runscore">2.024 <abbr title="nats per channel per sample">nats</abbr></span>
     </figcaption>
   </figure>
-  <figure class="run pending" style="--w: 1.0000">
+  <figure class="run" style="--w: 0.5">
     <span class="runbrain">
       <span class="runcrop"><canvas data-brain tabindex="0" role="img"
-              data-src="static/brain.json" data-edges="static/edges.json"
-              aria-label="SC-WBD-005, a design target of 146 M parameters, not trained and carrying no score. Drag or use the arrow keys to turn it."></canvas></span>
-      <span class="runmark">SC-WBD-005</span>
+              data-src="static/bwin-eeg-001/geometry.json" data-fill="0.70"
+              aria-label="bWIN EEG 001: its actual 128 template shell sites, not participant anatomy. 329,472 neural parameters; primary 25-person NLL 2.170. Drag or use the arrow keys to turn it."></canvas></span>
+      <span class="runmark">bWIN EEG 001</span>
     </span>
     <figcaption class="runnums">
-      <span class="runparams">146 M</span>
-      <span class="runscore runnone">not trained</span>
+      <span class="runparams">0.329 M</span>
+      <span class="runscore">2.170 <abbr title="nats per channel per sample">nats</abbr></span>
+      <a href="releases/bwin-eeg-001.html">Results &amp; checkpoint</a>
     </figcaption>
   </figure>
 </div>
 
-<p class="runlegend">Parameter count and held-out forecast score for every run,
-and the one being designed. Each brain is the same drawing &mdash; 414 parcels of
-one person&rsquo;s brain at their real coordinates over the strongest 900
-white-matter tracts &mdash; sized by the log of its parameter count, and each one
-turns: drag it, or tab to it and use the arrow keys. The score is a Gaussian
-negative log-likelihood in nats per channel per sample on participant-disjoint
-EEG, so lower is better, and the whole bench of baselines spans about 0.3 nats
-&mdash; these are small differences. 001 and 002 were scored in different units
-from their baselines and read roughly 0.6 nats low; correcting that moves both
-further behind, not closer.<a class="src" href="https://github.com/JacobFV/sc-wbd/blob/master/reports/training/eval_metric_incomparability.md">reports/training/eval_metric_incomparability.md</a></p>
+<p class="runlegend">Network parameter counts and each release's held-out Gaussian
+negative log-likelihood, in nats per channel per sample; lower is better. The four
+WBD views show the same 414 parcels and strongest 900 white-matter tracts, sized
+by log parameter count. bWIN's separate fixed-size view shows its actual 128
+geometric shell sites, with two oriented supports per site; it has no anatomical
+tract prior. Drag or use the arrow keys to rotate each view. bWIN also fits 64
+horizon-variance values, excluded from its network count.</p>
+<p class="runlegend">These scores are <strong>not a shared-test leaderboard</strong>:
+splits and preprocessing differ. bWIN's value is its 25-person primary result;
+its matched comparison with 003 and 004 uses five common held-out people. WBD-001
+and 002 also used different target units from their baselines, making their
+reported scores roughly 0.6 nats too low; correcting that increases their gap.
+<a class="src" href="https://github.com/JacobFV/sc-wbd/blob/master/reports/training/eval_metric_incomparability.md">reports/training/eval_metric_incomparability.md</a></p>
 
 <p><strong>Scale moved by a factor of ten between 002 and 003, and the score moved
 with it.</strong> 003 is the first model here to beat every baseline it was
@@ -813,6 +818,22 @@ rests on one.<a class="src" href="https://github.com/JacobFV/sc-wbd/blob/master/
   not have seen the second. One arm per family and no seed replication, so the
   signs and the ordering are the result; the deltas are not effect sizes and
   should not be quoted as any.</span></span></td>
+</tr>
+<tr>
+  <td data-label="Component"><strong><a href="https://huggingface.co/brandonin/bwin-eeg-001">bWIN EEG 001</a></strong></td>
+  <td data-label="State"><span class="chip pass">published</span>
+      <span class="chip unknown">EEG research baseline</span></td>
+  <td data-label="What it is">A compact Wilson–Cowan forecaster with 329,472 trained network parameters
+  and 64 fitted variance values. It predicts 64 future samples from 24 context
+  samples across 64 EEG channels at 125 Hz. Fifty epochs selected epoch 18 by
+  validation MSE. On 25 held-out people, MSE is <strong>4.497662</strong>, NLL
+  <strong>2.169866</strong> and mean-person R² <strong>0.065248</strong>.
+  It reduces MSE 9.2% versus zero prediction; the EEGNet adaptation performs
+  better, while the MSE intervals against AR16, VAR4 and ShallowConvNet cross
+  zero. Both WBD-003 and 004 perform better on their five-person common holdout.
+  The release includes an installable source wheel, weights, a synthetic replay
+  example and <a href="releases/bwin-eeg-001.html">the complete comparison</a>.
+  The input is offline-preprocessed EEG; this is a separate task-specific model.</td>
 </tr>
 <tr>
   <td data-label="Component"><strong>A model that beats its baselines</strong></td>

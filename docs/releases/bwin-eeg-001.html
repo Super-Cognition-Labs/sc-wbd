@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>bWIN EEG 001 — matched forecasts, community comparisons and IBM-1 handoff</title>
+<title>bWIN EEG 001 — matched forecasts and community comparisons</title>
 <meta name="description" content="A reproducible EEG forecasting release from WIN, with matched statistical, neural and historical SC-WBD comparisons and a separate account of broader community models.">
 <meta name="color-scheme" content="light dark">
-<meta property="og:title" content="bWIN EEG 001 — matched forecasts, community comparisons and IBM-1 handoff">
+<meta property="og:title" content="bWIN EEG 001 — matched forecasts and community comparisons">
 <meta property="og:description" content="A reproducible EEG forecasting release from WIN, with matched statistical, neural and historical SC-WBD comparisons and a separate account of broader community models.">
 <meta property="og:type" content="website">
 <link rel="stylesheet" href="../static/style.css">
@@ -37,7 +37,7 @@
     <li><a href="#the-task-every-measured-row-receives" data-rail="the-task-every-measured-row-receives"><span class="rail-label">The task every measured row r…</span></a></li>
     <li><a href="#new-measurements-on-the-matched-task" data-rail="new-measurements-on-the-matched-task"><span class="rail-label">New measurements on the match…</span></a></li>
     <li><a href="#what-the-community-comparison-means" data-rail="what-the-community-comparison-means"><span class="rail-label">What the community comparison…</span></a></li>
-    <li><a href="#what-ibm-1-can-take-from-this-release" data-rail="what-ibm-1-can-take-from-this-release"><span class="rail-label">What IBM-1 can take from this…</span></a></li>
+    <li><a href="#what-these-experiments-teach-us" data-rail="what-these-experiments-teach-us"><span class="rail-label">What these experiments teach…</span></a></li>
     <li><a href="#use-the-checkpoint" data-rail="use-the-checkpoint"><span class="rail-label">Use the checkpoint</span></a></li>
   </ol>
 </nav>
@@ -60,7 +60,7 @@ forecasting task; the earlier multimodal checkpoints retain their own scope.</p>
 
 <p><a href="https://huggingface.co/brandonin/bwin-eeg-001">Checkpoint, source wheel and model card</a> ·
 <a href="https://huggingface.co/brandonin/bwin-eeg-001/blob/main/REPORT.md">Full comparative report</a> ·
-<a href="#ibm-handoff">Lessons for IBM-1</a></p>
+<a href="#modeling-lessons">Lessons from the released models</a></p>
 </section>
 <section class="chapter" id="the-task-every-measured-row-receives">
 <h2>The task every measured row receives</h2>
@@ -230,14 +230,14 @@ cannot be ranked using a decoding accuracy from a different task.</td></tr>
 <a href="https://www.thevirtualbrain.org/tvb/zwei/brainsimulator-software">TVB distribution and license</a>.
 Checked September 5, 2026.</p>
 </section>
-<section class="chapter tinted" id="what-ibm-1-can-take-from-this-release">
-<h2>What IBM-1 can take from this release</h2>
+<section class="chapter tinted" id="what-these-experiments-teach-us">
+<h2>What these experiments teach us</h2>
 
-<div id="ibm-handoff">
+<div id="modeling-lessons">
 <p>The transferable pattern is a named use, an explicit input contract, selected
 mechanisms, fitted uncertainty, held people, alternatives and a reloadable
-artifact. WIN uses its own mechanisms; IBM-1 supplied a useful materialization
-pattern, not imported equations or runtime code.</p>
+artifact. Each experiment below tests a specific use of WIN’s own mechanisms
+and records where it helped or failed.</p>
 <table><thead><tr><th>Earlier WIN integration</th><th>Measured lesson</th><th>Next practical step</th></tr></thead><tbody>
 <tr><td data-label="Earlier WIN integration">Audio → MEG recurrent state</td><td data-label="Measured lesson">Selected R² −0.001035; all recurrent arms lose to zero. The prior small MLP scores +0.000337.</td><td data-label="Next practical step">Improve optimization and capacity controls before claiming recurrence adds predictive value.</td></tr>
 <tr><td data-label="Earlier WIN integration">Sleep spectra and neural/temporal features</td><td data-label="Measured lesson">Simple band-power balanced accuracy 0.690114 beats integrated 0.668703 on four test people.</td><td data-label="Next practical step">Keep the simple baseline, investigate N1 errors, and evaluate external participants.</td></tr>

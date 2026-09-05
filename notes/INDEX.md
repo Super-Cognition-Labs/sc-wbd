@@ -10,10 +10,11 @@ Read this after `scratch/<TASK>.md` and before starting: it is the two-minute an
 
 <!-- BEGIN GENERATED -->
 
-**19 notes** · 0 blocked · 7 live decisions · 8 standing findings · 4 open questions
+**20 notes** · 0 blocked · 8 live decisions · 8 standing findings · 4 open questions
 
 ### Live decisions
 
+- [Results include released bWIN and engineering leads with practical topics](decisions/2026-09-05-released-models-and-reader-focused-engineering.md) — `active` · `BWIN_SITE_EDIT`
 - [The bWIN release separates matched forecast scores from community task context](decisions/2026-09-05-bwin-release-keeps-matched-and-contextual-comparisons-separate.md) — `active` · `BWIN_RELEASE`
 - [Chose notes/ + scratch/ beside reports/, rather than folding them together](decisions/2026-08-14-notes-beside-reports-and-scratch-not-instead-of-them.md) — `active` · `CLAIM_GATES`
 - [G4 is re-specified to test pose discrimination, which is what SC-WBD does](decisions/2026-08-14-g4-tests-pose-discrimination-not-causal-identifiability.md) — `active` · `CLAIM_GATES`

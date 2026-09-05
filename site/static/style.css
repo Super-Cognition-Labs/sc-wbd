@@ -857,7 +857,6 @@ figure img, figure picture { max-width: 100%; height: auto; display: block; }
 @media (max-width: 34rem) {
   .runstack { --brain: 8.2rem; gap: 1.1rem 1rem; }
 }
-}
 figcaption {
   font-family: var(--sans);
   font-size: 0.78rem;

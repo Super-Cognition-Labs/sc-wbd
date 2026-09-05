@@ -61,7 +61,7 @@ reads the <strong>same shared state</strong>, through its own physics, on its ow
   <span>Source on GitHub</span></a></li>
 <li><a href="https://huggingface.co/jacob-valdez/scwbd-004">
   <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 .6 15 4.3v.9L8 8.9 1 5.2v-.9L8 .6zM1 7.1l1.9 1L8 10.8l5.1-2.7 1.9-1v1.2L8 12.9 1 8.3V7.1zm0 3.3 1.9 1L8 14.1l5.1-2.7 1.9-1v1.2L8 16.2 1 11.6v-1.2z"/></svg>
-  <span>Latest model on Hugging Face</span></a></li>
+  <span>SC-WBD-004 checkpoint</span></a></li>
 </ul>
 
 </div>
@@ -75,7 +75,20 @@ reads the <strong>same shared state</strong>, through its own physics, on its ow
 </div>
 </div>
 </section>
-<section class="chapter" id="the-world-s-first-whole-brain-dynamics-wbd-model">
+<section class="chapter" id="new-bwin-eeg-001-and-a-matched-comparison">
+<h2>New: bWIN EEG 001 and a matched comparison</h2>
+
+<p>A task-specific WIN model forecasts 64 future EEG samples from 24 observed
+samples. On 25 held-out people it improves over zero, while fitted linear and
+community neural alternatives have lower average error. Both SC-WBD-003 and
+SC-WBD-004 perform better on the five people held out by both checkpoints.
+This is a measured comparison of separate research artifacts, not a claim that
+the new model supersedes the integrated predecessors.</p>
+<p><a href="releases/bwin-eeg-001.html">Read the results, actual-data figure,
+community comparison and IBM-1 handoff</a> ·
+<a href="https://huggingface.co/brandonin/bwin-eeg-001">Checkpoint and source</a></p>
+</section>
+<section class="chapter tinted" id="the-world-s-first-whole-brain-dynamics-wbd-model">
 <h2>The World's First Whole Brain Dynamics (WBD) Model</h2>
 
 
@@ -319,7 +332,7 @@ thing.</p>
   <div><span class="n pass">4</span><span class="l">field solvers validated<br>against closed-form solutions, to <strong>1.3%</strong> or better</span></div>
 </div>
 </section>
-<section class="chapter tinted" id="modelling-brain-activity">
+<section class="chapter" id="modelling-brain-activity">
 <h2>Modelling brain activity</h2>
 
 
@@ -354,7 +367,7 @@ to carry it.</p>
 number, and a value the model could not actually resolve comes back marked
 unresolved instead of as a plausible guess.</p>
 </section>
-<section class="chapter" id="simulating-intervention-responses">
+<section class="chapter tinted" id="simulating-intervention-responses">
 <h2>Simulating intervention responses</h2>
 
 
@@ -403,7 +416,7 @@ response identifies and by that hemisphere's motor parcels. One target site, one
 intensity, two participants — a pulse somewhere the model has not seen is still
 untested.</p>
 </section>
-<section class="chapter tinted" id="fine-tuneable-for-personalized-neurotechnology">
+<section class="chapter" id="fine-tuneable-for-personalized-neurotechnology">
 <h2>Fine-tuneable for personalized neurotechnology</h2>
 
 
@@ -426,9 +439,157 @@ hypotheses is visible in advance rather than after.
 <a href="possibilities/index.html">Possibilities</a> sets out what this makes
 reachable, in the order it becomes reachable.</p>
 </section>
-<section class="chapter" id="artifacts">
-<h2>Artifacts</h2>
+<section class="chapter tinted" id="results">
+<h2>Results</h2>
 
+
+<p>Four models are trained and public. Each is larger than the one before it and
+each is scored on participants held out of its own training, against the same
+bench of statistical baselines.</p>
+
+<div class="runstack">
+  <figure class="run" style="--w: 0.3934">
+    <span class="runbrain">
+      <span class="runcrop"><canvas data-brain tabindex="0" role="img"
+              data-src="static/brain.json" data-edges="static/edges.json"
+              aria-label="SC-WBD-001, 1.76 M parameters, held-out NLL 2.555. Drag or use the arrow keys to turn it."></canvas></span>
+      <span class="runmark">SC-WBD-001</span>
+    </span>
+    <figcaption class="runnums">
+      <span class="runparams">1.76 M</span>
+      <span class="runscore">2.555 <abbr title="nats per channel per sample">nats</abbr></span>
+    </figcaption>
+  </figure>
+  <figure class="run" style="--w: 0.4427">
+    <span class="runbrain">
+      <span class="runcrop"><canvas data-brain tabindex="0" role="img"
+              data-src="static/brain.json" data-edges="static/edges.json"
+              aria-label="SC-WBD-002, 2.52 M parameters, held-out NLL 3.179. Drag or use the arrow keys to turn it."></canvas></span>
+      <span class="runmark">SC-WBD-002</span>
+    </span>
+    <figcaption class="runnums">
+      <span class="runparams">2.52 M</span>
+      <span class="runscore">3.179 <abbr title="nats per channel per sample">nats</abbr></span>
+    </figcaption>
+  </figure>
+  <figure class="run" style="--w: 0.7648">
+    <span class="runbrain">
+      <span class="runcrop"><canvas data-brain tabindex="0" role="img"
+              data-src="static/brain.json" data-edges="static/edges.json"
+              aria-label="SC-WBD-003, 26.30 M parameters, held-out NLL 1.986. Drag or use the arrow keys to turn it."></canvas></span>
+      <span class="runmark">SC-WBD-003</span>
+    </span>
+    <figcaption class="runnums">
+      <span class="runparams">26.30 M</span>
+      <span class="runscore">1.986 <abbr title="nats per channel per sample">nats</abbr></span>
+    </figcaption>
+  </figure>
+  <figure class="run" style="--w: 0.7648">
+    <span class="runbrain">
+      <span class="runcrop"><canvas data-brain tabindex="0" role="img"
+              data-src="static/brain.json" data-edges="static/edges.json"
+              aria-label="SC-WBD-004, 26.30 M parameters, held-out NLL 2.024. Drag or use the arrow keys to turn it."></canvas></span>
+      <span class="runmark">SC-WBD-004</span>
+    </span>
+    <figcaption class="runnums">
+      <span class="runparams">26.30 M</span>
+      <span class="runscore">2.024 <abbr title="nats per channel per sample">nats</abbr></span>
+    </figcaption>
+  </figure>
+  <figure class="run pending" style="--w: 1.0000">
+    <span class="runbrain">
+      <span class="runcrop"><canvas data-brain tabindex="0" role="img"
+              data-src="static/brain.json" data-edges="static/edges.json"
+              aria-label="SC-WBD-005, a design target of 146 M parameters, not trained and carrying no score. Drag or use the arrow keys to turn it."></canvas></span>
+      <span class="runmark">SC-WBD-005</span>
+    </span>
+    <figcaption class="runnums">
+      <span class="runparams">146 M</span>
+      <span class="runscore runnone">not trained</span>
+    </figcaption>
+  </figure>
+</div>
+
+<p class="runlegend">Parameter count and held-out forecast score for every run,
+and the one being designed. Each brain is the same drawing &mdash; 414 parcels of
+one person&rsquo;s brain at their real coordinates over the strongest 900
+white-matter tracts &mdash; sized by the log of its parameter count, and each one
+turns: drag it, or tab to it and use the arrow keys. The score is a Gaussian
+negative log-likelihood in nats per channel per sample on participant-disjoint
+EEG, so lower is better, and the whole bench of baselines spans about 0.3 nats
+&mdash; these are small differences. 001 and 002 were scored in different units
+from their baselines and read roughly 0.6 nats low; correcting that moves both
+further behind, not closer.<a class="src" href="https://github.com/JacobFV/sc-wbd/blob/master/reports/training/eval_metric_incomparability.md">reports/training/eval_metric_incomparability.md</a></p>
+
+<p><strong>Scale moved by a factor of ten between 002 and 003, and the score moved
+with it.</strong> 003 is the first model here to beat every baseline it was
+measured against, by ~0.04 nats. 004 is the same size, adds a stage, and
+<strong>does not reproduce that separation</strong> &mdash; on a holdout built
+under a different split policy, so it is a failure to reproduce on other data
+rather than a regression on the same data, which is the weakest of the available
+defences.<span class="note"><input type="checkbox" id="index-n6" class="note-toggle"><label for="index-n6" class="note-ref">6</label><span class="note-body"><span class="note-n">6</span>ISSUE-014 versioned the split policy between the two runs: 003
+scored 27 participants under <code>shuffle_slice_v1</code>, 004 scores 25 under
+<code>stable_hash_v2</code>. The new bWIN comparison freshly scores both checkpoints on the five people
+held out by both, preserving their original training splits. That narrow common
+subset does not replace a full retraining/evaluation under one shared policy;
+see the linked bWIN release for the matched result.</span></span> Parameter count is
+the axis that grew monotonically here; the forecast score is not, and no arrangement
+of these four numbers makes it so.</p>
+
+<p><strong>What did grow every run is how much of the model can be measured at
+all.</strong> 002 could be scored on one thing. 004 is scored on five, and it is
+the first run able to say anything about fMRI, about whether its own posterior is
+calibrated, or about whether fitting to an individual helps &mdash; because each
+of those needed an instrument built before it could return an answer. Three of the
+five came back negative, and that is the trade this programme keeps making:
+a measurement that can fail is worth more than a capability nobody checked.</p>
+
+<h3>Where this is heading</h3>
+
+<p>005 is designed from 004&rsquo;s evidence rather than from its disappointments,
+and the design is written down before the run.<a class="src" href="https://github.com/JacobFV/sc-wbd/blob/master/reports/RUN5_DESIGN.md">reports/RUN5_DESIGN.md</a> Three
+things are already decided:</p>
+
+<ul>
+<li><strong>The fMRI head gets fitted to a settled state instead of fighting for
+one.</strong> 004&rsquo;s haemodynamic likelihood degrades through training because
+the only haemodynamic corpus is 5.39% of the gradient and is outvoted 17.6&nbsp;:&nbsp;1.
+Four diagnostic arms located the cause: freezing the five Balloon&ndash;Windkessel
+constants changes nothing, and freezing the shared trunk sends the likelihood
+<strong>1.99 &rarr; 1.86 and still falling</strong>. The head models this data
+perfectly well; it is the state underneath it that will not hold still.<span class="note"><input type="checkbox" id="index-n7" class="note-toggle"><label for="index-n7" class="note-ref">7</label><span class="note-body"><span class="note-n">7</span>The imbalance is a property of the corpus, not of the tuning: 485 BOLD windows
+from 10 participants at one site against roughly 100,000 EEG windows from 187.
+More fMRI data moves it and a better optimiser does not, which is why reweighting
+the mixture and re-tuning the BOLD learning rate are both explicitly ruled out.
+An independent analytic route agrees &mdash; a linear&ndash;Gaussian surrogate
+that imports nothing from the trained model puts the haemodynamic channel at
+0.1&ndash;1.0% of the electrical channel&rsquo;s information about the coupling
+gains.</span></span></li>
+<li><strong>The posterior is not re-tuned until one cheap experiment has run.</strong>
+004&rsquo;s learning-rate repair worked and overshot. The sweep that chose it
+predicted a coupling-gain R&sup2; of 0.674&ndash;0.766 and the full curriculum
+returned 0.284, and why is unmeasured. Scoring an intermediate checkpoint that is
+already on disk separates a schedule problem from a sweep that does not transfer,
+and it costs one evaluation.</li>
+<li><strong>Individualisation starts from the 30.</strong> Of 75 participants
+scored on a second night, 30 carry a person effect of exactly zero. Whether those
+are the participants the stage sampled least is nearly free to check and rules out
+two of the three candidate causes.</li>
+</ul>
+
+<p>The distance to a validated claim about brains is known and most of it is not
+compute. Five claim gates need <strong>nine baseline arms</strong> that were never
+trained &mdash; about <strong>380 hours</strong> of wall clock, one job at a time,
+to train them to a state a claim could rest on.<span class="note"><input type="checkbox" id="index-n8" class="note-toggle"><label for="index-n8" class="note-ref">8</label><span class="note-body"><span class="note-n">8</span>Two independently measured
+figures agree to 3%: 004&rsquo;s ablation retrained 11 arms at 200 steps in 371
+minutes, and the full run did 14,600 steps in 42.2 hours. Cheap 200-step probes
+would take 5.1 hours and are not baselines a claim can rest on.</span></span> One gate is not
+reachable at any budget: it requires recovery of direction, delay, gain, dose and
+state-dependence from a <em>prospective</em> perturbation study, and three of those
+five are unobtainable in principle from the retrospective stimulation data that
+exists.<a class="src" href="https://github.com/JacobFV/sc-wbd/blob/master/reports/PROGRAMME_ASSESSMENT.md">reports/PROGRAMME_ASSESSMENT.md</a> The new <a href="releases/bwin-eeg-001.html">bWIN release</a>
+now supplies a fresh five-person common-holdout comparison of 003 and 004.
+A common-split retraining remains a different, larger experiment.</p>
 
 <p>Stated at the granularity someone could check, with the public artifacts in
 the same table as the parts they are made of. Every row is a thing you could run
@@ -456,7 +617,7 @@ rests on one.<a class="src" href="https://github.com/JacobFV/sc-wbd/blob/master/
 <tr>
   <td data-label="Component"><strong><a href="https://huggingface.co/datasets/jacob-valdez/scwbd-anatomy-prior-414">Anatomy prior</a></strong></td>
   <td data-label="State"><span class="chip pass">published</span></td>
-  <td data-label="What it is">The 414 regions — 400 Schaefer cortical, 14 Tian subcortical — with the connectome, geometry and cortical normals, carrying receptor density, intrinsic timescale, myelin and thickness. Partitioned into nine families by a rule fixed before the test ran.<span class="note"><input type="checkbox" id="index-n6" class="note-toggle"><label for="index-n6" class="note-ref">6</label><span class="note-body"><span class="note-n">6</span>Ship the finest candidate partition in which <em>every</em> pair of families separates under a spin null. Yeo-7 separated 6 of 21 pairs and was rejected. The surviving split is binary over cortex — <code>cortex_unimodal</code> (138 parcels) and <code>cortex_association</code> (262) — plus seven subcortical families of two parcels each.</span></span></td>
+  <td data-label="What it is">The 414 regions — 400 Schaefer cortical, 14 Tian subcortical — with the connectome, geometry and cortical normals, carrying receptor density, intrinsic timescale, myelin and thickness. Partitioned into nine families by a rule fixed before the test ran.<span class="note"><input type="checkbox" id="index-n9" class="note-toggle"><label for="index-n9" class="note-ref">9</label><span class="note-body"><span class="note-n">9</span>Ship the finest candidate partition in which <em>every</em> pair of families separates under a spin null. Yeo-7 separated 6 of 21 pairs and was rejected. The surviving split is binary over cortex — <code>cortex_unimodal</code> (138 parcels) and <code>cortex_association</code> (262) — plus seven subcortical families of two parcels each.</span></span></td>
 </tr>
 <tr>
   <td data-label="Component"><strong>Dynamics backends</strong></td>
@@ -471,12 +632,12 @@ rests on one.<a class="src" href="https://github.com/JacobFV/sc-wbd/blob/master/
 <tr>
   <td data-label="Component"><strong>Real EEG corpus</strong></td>
   <td data-label="State"><span class="chip pass">built</span></td>
-  <td data-label="What it is">109 PhysioNet participants, 64 channels, split <strong>71/11/27</strong> and verified participant-disjoint. Real human recording, kept strictly separate from the simulated corpus.<span class="note"><input type="checkbox" id="index-n7" class="note-toggle"><label for="index-n7" class="note-ref">7</label><span class="note-body"><span class="note-n">7</span>A simulated corpus can never be evidence that the model has learned anything about biology. Conflating the two would be the most basic error available to this project.</span></span></td>
+  <td data-label="What it is">109 PhysioNet participants, 64 channels, split <strong>71/11/27</strong> and verified participant-disjoint. Real human recording, kept strictly separate from the simulated corpus.<span class="note"><input type="checkbox" id="index-n10" class="note-toggle"><label for="index-n10" class="note-ref">10</label><span class="note-body"><span class="note-n">10</span>A simulated corpus can never be evidence that the model has learned anything about biology. Conflating the two would be the most basic error available to this project.</span></span></td>
 </tr>
 <tr>
   <td data-label="Component"><strong>Stimulation path</strong></td>
   <td data-label="State"><span class="chip unknown">partial</span></td>
-  <td data-label="What it is">A validated E-field solver joined to the dynamics as an additive drive. The <em>field</em> computations pass their gates. The mapping from a <em>computed field</em> to a neural response is still unvalidated, and the obstacle is now the recording rather than the model: the measured stimulation corpus on disk (704 single-pulse TMS-EEG epochs, CC0) ships no per-pulse coil pose, so no field can be computed for the pulses that were actually delivered.<a class="src" href="https://github.com/JacobFV/sc-wbd/blob/master/scwbd/intervene/impulse_response.py">scwbd/intervene/impulse_response.py</a><span class="note"><input type="checkbox" id="index-n8" class="note-toggle"><label for="index-n8" class="note-ref">8</label><span class="note-body"><span class="note-n">8</span>Recovering a pose from the data was considered and refused. The release states the target was the first dorsal interosseous representation of one M1 and was MRI-navigated, but a position inferred from that description is an assumption about the study, not a measurement of the coil, and an E-field computed from it would carry a precision nothing supports.</span></span></td>
+  <td data-label="What it is">A validated E-field solver joined to the dynamics as an additive drive. The <em>field</em> computations pass their gates. The mapping from a <em>computed field</em> to a neural response is still unvalidated, and the obstacle is now the recording rather than the model: the measured stimulation corpus on disk (704 single-pulse TMS-EEG epochs, CC0) ships no per-pulse coil pose, so no field can be computed for the pulses that were actually delivered.<a class="src" href="https://github.com/JacobFV/sc-wbd/blob/master/scwbd/intervene/impulse_response.py">scwbd/intervene/impulse_response.py</a><span class="note"><input type="checkbox" id="index-n11" class="note-toggle"><label for="index-n11" class="note-ref">11</label><span class="note-body"><span class="note-n">11</span>Recovering a pose from the data was considered and refused. The release states the target was the first dorsal interosseous representation of one M1 and was MRI-navigated, but a position inferred from that description is an assumption about the study, not a measurement of the coil, and an E-field computed from it would carry a precision nothing supports.</span></span></td>
 </tr>
 <tr>
   <td data-label="Component"><strong><a href="https://huggingface.co/jacob-valdez/scwbd-001-beta">scwbd-001-beta</a></strong></td>
@@ -487,7 +648,7 @@ rests on one.<a class="src" href="https://github.com/JacobFV/sc-wbd/blob/master/
   <td data-label="Component"><strong><a href="https://huggingface.co/jacob-valdez/scwbd-002-pilot">scwbd-002-pilot</a></strong></td>
   <td data-label="State"><span class="chip fail">negative result</span></td>
   <td data-label="What it is">2.5M parameters over the 414 regions, the treatment arm. It loses to every
-  baseline on both columns, NLL and MSE.<span class="note"><input type="checkbox" id="index-n9" class="note-toggle"><label for="index-n9" class="note-ref">9</label><span class="note-body"><span class="note-n">9</span>NLL 3.179 against 2.045 for the
+  baseline on both columns, NLL and MSE.<span class="note"><input type="checkbox" id="index-n12" class="note-toggle"><label for="index-n12" class="note-ref">12</label><span class="note-body"><span class="note-n">12</span>NLL 3.179 against 2.045 for the
   best baseline; MSE 36.27 against 4.53. Every paired participant-clustered
   interval excludes zero. And 3.179 flatters it: SC-WBD is scored on
   <code>target/s</code> with the Jacobian folded into the log-variance while
@@ -504,7 +665,7 @@ rests on one.<a class="src" href="https://github.com/JacobFV/sc-wbd/blob/master/
   curriculum gates were named for the previous run's stages, so no gradient was
   ever taken on a real recording; and <strong>88.7% of the parameters could not
   receive a gradient at all</strong>, including the entire family-indexed
-  regional model that is the treatment arm's whole thesis.<span class="note"><input type="checkbox" id="index-n10" class="note-toggle"><label for="index-n10" class="note-ref">10</label><span class="note-body"><span class="note-n">10</span>The regional
+  regional model that is the treatment arm's whole thesis.<span class="note"><input type="checkbox" id="index-n13" class="note-toggle"><label for="index-n13" class="note-ref">13</label><span class="note-body"><span class="note-n">13</span>The regional
   modules were renamed <code>local</code> → <code>family_local</code> and so on
   when the family-padded architecture landed. The permission cards still grant
   <code>local.*</code>, and <code>fnmatch("family_local.ports.out_proj.weight",
@@ -527,7 +688,7 @@ rests on one.<a class="src" href="https://github.com/JacobFV/sc-wbd/blob/master/
   a second 64-channel cap (2), parcel-space BOLD (10), button presses (2) and
   single-pulse TMS-EEG (2). Two kinds of signal reach the model that never had a
   source before — a <em>boundary output</em>, produced by the participant and
-  measured outside the skull, and a <em>measured intervention</em>.<span class="note"><input type="checkbox" id="index-n11" class="note-toggle"><label for="index-n11" class="note-ref">11</label><span class="note-body"><span class="note-n">11</span>The
+  measured outside the skull, and a <em>measured intervention</em>.<span class="note"><input type="checkbox" id="index-n14" class="note-toggle"><label for="index-n14" class="note-ref">14</label><span class="note-body"><span class="note-n">14</span>The
   schema has always declared four attachment kinds — stimulus, observation,
   boundary_output, context. Every source in run 2 was an observation, so three of
   the four were untested while the schematic above gave them equal billing. Run 3
@@ -536,7 +697,7 @@ rests on one.<a class="src" href="https://github.com/JacobFV/sc-wbd/blob/master/
   defect run 2 shipped with is fixed:
   <strong>99.98% of its parameters have moved off their initialisation, against
   run 2's 11.3%</strong> — including the entire family-indexed regional model
-  that is the treatment arm's whole thesis, every tensor of it.<span class="note"><input type="checkbox" id="index-n12" class="note-toggle"><label for="index-n12" class="note-ref">12</label><span class="note-body"><span class="note-n">12</span>Measured
+  that is the treatment arm's whole thesis, every tensor of it.<span class="note"><input type="checkbox" id="index-n15" class="note-toggle"><label for="index-n15" class="note-ref">15</label><span class="note-body"><span class="note-n">15</span>Measured
   by hashing every parameter before the first step and comparing, so the answer
   is a bit comparison rather than a threshold somebody chose. Quoted in
   parameters because run 2's figure is: by <em>tensor</em> count run 3 is 341 of
@@ -555,7 +716,7 @@ rests on one.<a class="src" href="https://github.com/JacobFV/sc-wbd/blob/master/
   <strong>On 27 held-out participants it beats every baseline</strong> — 1.986
   nats against 2.024 for a 4th-order VAR and 2.025 for a 16th-order AR, with
   every paired participant-clustered 95% interval excluding zero. It is the
-  first model here that does.<span class="note"><input type="checkbox" id="index-n13" class="note-toggle"><label for="index-n13" class="note-ref">13</label><span class="note-body"><span class="note-n">13</span>Five distinct comparators, not six:
+  first model here that does.<span class="note"><input type="checkbox" id="index-n16" class="note-toggle"><label for="index-n16" class="note-ref">16</label><span class="note-body"><span class="note-n">16</span>Five distinct comparators, not six:
   <code>subject_specific_ar</code> is bit-identical to <code>ar16</code>, because
   a participant-disjoint split leaves no test participant with a fitted person
   model. The margin is ~0.04 nats — decisive at this sample size, and small. It
@@ -574,7 +735,7 @@ rests on one.<a class="src" href="https://github.com/JacobFV/sc-wbd/blob/master/
   <strong>And no measured source earns its place.</strong> Leave-one-out over
   eleven retrained arms: only the simulator contributes, and all nine measured
   and prior families show <em>negative</em> transfer — the model forecasts
-  marginally better without each of them.<span class="note"><input type="checkbox" id="index-n14" class="note-toggle"><label for="index-n14" class="note-ref">14</label><span class="note-body"><span class="note-n">14</span>Scored on the simulated
+  marginally better without each of them.<span class="note"><input type="checkbox" id="index-n17" class="note-toggle"><label for="index-n17" class="note-ref">17</label><span class="note-body"><span class="note-n">17</span>Scored on the simulated
   validation set, so this is close to tautological in direction: every gradient
   a measured source contributes pulls the model away from the simulator it is
   being scored against. It does not test whether measured data helps
@@ -623,7 +784,7 @@ rests on one.<a class="src" href="https://github.com/JacobFV/sc-wbd/blob/master/
   <strong>99.99% of its parameters moved off their initialisation</strong>, and
   the eight haemodynamic tensors are among them &mdash; 003's were bit-identical
   to initialisation, which is what made its fMRI term inert. Read off the
-  checkpoint, not off a card.<span class="note"><input type="checkbox" id="index-n15" class="note-toggle"><label for="index-n15" class="note-ref">15</label><span class="note-body"><span class="note-n">15</span>The held-out
+  checkpoint, not off a card.<span class="note"><input type="checkbox" id="index-n18" class="note-toggle"><label for="index-n18" class="note-ref">18</label><span class="note-body"><span class="note-n">18</span>The held-out
   second-night score is 2.0436 [2.0049, 2.0896] over 1,500 windows. It is
   reported because withholding a measured number is its own distortion, and it is
   not evidence either way: a model with no person effect would score about the
@@ -640,7 +801,7 @@ rests on one.<a class="src" href="https://github.com/JacobFV/sc-wbd/blob/master/
   <strong>The forecast result is the majority source's.</strong> At +0.0144 that
   one corpus is fourteen times the next contributor and larger than the whole
   0.0100 margin by which this model fails to separate from a 16th-order AR, so
-  what the headline measures is one corpus rather than fusion.<span class="note"><input type="checkbox" id="index-n16" class="note-toggle"><label for="index-n16" class="note-ref">16</label><span class="note-body"><span class="note-n">16</span>The fMRI arm
+  what the headline measures is one corpus rather than fusion.<span class="note"><input type="checkbox" id="index-n19" class="note-toggle"><label for="index-n19" class="note-ref">19</label><span class="note-body"><span class="note-n">19</span>The fMRI arm
   is the surprise and it cuts against a prediction written down before the run:
   its own likelihood diverged by a factor of 18,000 while its gradient was helping
   the shared state forecast measured EEG. A source can carry information into a
@@ -670,7 +831,7 @@ rests on one.<a class="src" href="https://github.com/JacobFV/sc-wbd/blob/master/
   <strong>scwbd-004 does not reproduce the separation.</strong> On its own
   holdout of 25 participants no baseline beats it and it beats neither the
   16th-order AR (<code>-0.0100 [-0.0480, +0.0144]</code>) nor the VAR(4)
-  (<code>-0.0127 [-0.0561, +0.0146]</code>) — both intervals contain zero.<span class="note"><input type="checkbox" id="index-n17" class="note-toggle"><label for="index-n17" class="note-ref">17</label><span class="note-body"><span class="note-n">17</span>The two runs are not scored on the same people. ISSUE-014 replaced the split
+  (<code>-0.0127 [-0.0561, +0.0146]</code>) — both intervals contain zero.<span class="note"><input type="checkbox" id="index-n20" class="note-toggle"><label for="index-n20" class="note-ref">20</label><span class="note-body"><span class="note-n">20</span>The two runs are not scored on the same people. ISSUE-014 replaced the split
   policy between them, so 003 scored 27 participants under
   <code>shuffle_slice_v1</code> and 004 scores 25 under
   <code>stable_hash_v2</code>, with the baseline protocol revised as well. That

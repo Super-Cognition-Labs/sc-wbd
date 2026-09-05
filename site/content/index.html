@@ -26,7 +26,7 @@ reads the <strong>same shared state</strong>, through its own physics, on its ow
   <span>Source on GitHub</span></a></li>
 <li><a href="https://huggingface.co/jacob-valdez/scwbd-004">
   <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 .6 15 4.3v.9L8 8.9 1 5.2v-.9L8 .6zM1 7.1l1.9 1L8 10.8l5.1-2.7 1.9-1v1.2L8 12.9 1 8.3V7.1zm0 3.3 1.9 1L8 14.1l5.1-2.7 1.9-1v1.2L8 16.2 1 11.6v-1.2z"/></svg>
-  <span>Latest model on Hugging Face</span></a></li>
+  <span>SC-WBD-004 checkpoint</span></a></li>
 </ul>
 
 </div>
@@ -35,10 +35,21 @@ reads the <strong>same shared state</strong>, through its own physics, on its ow
 <canvas class="arch-canvas archhero" data-case="bci" data-panels="scene"
         data-uses="on"
         data-src="static/brain.json" data-edges="static/edges.json"
-        aria-label="SC-WBD-004, at the centre of the 414 regions of one person's brain at their real coordinates, with the strongest white-matter tracts between them. Drag to orbit. Around it, what the model is for: neural state estimation, whole-brain forecasting, cross-modal prediction, EEG source inference, EEG computer control, neural error detection, motor-intent decoding, language decoding, cognitive-state decoding, individualized brain mapping, functional network mapping, connectivity inference, perturbation forecasting, TMS target selection, TMS response prediction, tFUS target selection, tFUS response prediction, closed-loop neuromodulation, neurofeedback control, cognitive intervention design, longitudinal brain modeling, personalized digital twins, and behavioral forecasting."></canvas></span>
+        aria-label="SC-WBD-004, at the centre of the 414 regions of one person's brain at their real coordinates, with the strongest white-matter tracts between them. Drag to orbit. Around it, what the model is for: neural state estimation, whole-brain forecasting, cross-modal prediction, EEG source inference, EEG computer control, neural error detection, motor-intent decoding, language decoding, cognitive-state decoding, individualized brain mapping, functional network mapping, connectivity inference, perturbation forecasting, TMS target selection, TMS response prediction, tFUS target selection, tFUS response prediction, closed-loop neuromodulation, neurofeedback control, cognitive intervention design, longitudinal brain modeling, personalized digital twins, and behavioral forecasting."></canvas>
 
 </div>
 </div>
+
+<h2>New: bWIN EEG 001 and a matched comparison</h2>
+<p>A task-specific WIN model forecasts 64 future EEG samples from 24 observed
+samples. On 25 held-out people it improves over zero, while fitted linear and
+community neural alternatives have lower average error. Both SC-WBD-003 and
+SC-WBD-004 perform better on the five people held out by both checkpoints.
+This is a measured comparison of separate research artifacts, not a claim that
+the new model supersedes the integrated predecessors.</p>
+<p><a href="releases/bwin-eeg-001.html">Read the results, actual-data figure,
+community comparison and IBM-1 handoff</a> ·
+<a href="https://huggingface.co/brandonin/bwin-eeg-001">Checkpoint and source</a></p>
 
 <h2>The World's First Whole Brain Dynamics (WBD) Model</h2>
 
@@ -290,7 +301,7 @@ are, so activity in one region moves the regions it is actually connected to.</p
 
 <canvas class="arch-canvas" data-case="semantic"
         data-src="static/brain.json" data-edges="static/edges.json"
-        aria-label="Diagram: parcels and tracts annotated to the signal categories a naturalistic viewing study uses."></canvas></span>
+        aria-label="Diagram: parcels and tracts annotated to the signal categories a naturalistic viewing study uses."></canvas>
 <p class="arch-cap">Show someone a film and you know exactly what they saw, where
 they looked, and what they said about it — alongside what their brain did. Four
 different kinds of evidence about one response, all landing on one model.</p>
@@ -331,7 +342,7 @@ against their own recording.</p>
 
 <canvas class="arch-canvas" data-case="tms"
         data-src="static/brain.json" data-edges="static/edges.json"
-        aria-label="Diagram: parcels and tracts annotated to the signal categories TMS target selection uses."></canvas></span>
+        aria-label="Diagram: parcels and tracts annotated to the signal categories TMS target selection uses."></canvas>
 <p class="arch-cap">A magnetic pulse goes in; the electrical response, the
 blood-flow response and the muscle twitch all come back out. The field is computed
 through that person's own head, not an average one.</p>
@@ -371,7 +382,7 @@ rest is left marginalised rather than filled in with someone else's anatomy.</p>
 
 <canvas class="arch-canvas" data-case="bci"
         data-src="static/brain.json" data-edges="static/edges.json"
-        aria-label="Diagram: parcels and tracts annotated to the signal categories a cursor-control task uses."></canvas></span>
+        aria-label="Diagram: parcels and tracts annotated to the signal categories a cursor-control task uses."></canvas>
 <p class="arch-cap">Reading intent from the scalp to move a cursor. What makes
 this hard is not decoding once; it is decoding the same way tomorrow, which is a
 problem about modelling a person rather than a population.</p>
@@ -470,9 +481,10 @@ under a different split policy, so it is a failure to reproduce on other data
 rather than a regression on the same data, which is the weakest of the available
 defences.[[note: ISSUE-014 versioned the split policy between the two runs: 003
 scored 27 participants under <code>shuffle_slice_v1</code>, 004 scores 25 under
-<code>stable_hash_v2</code>. Re-scoring both under one policy is possible and has
-not been done. Until it is, the honest reading is that the programme has one
-positive held-out result and one failure to reproduce it.]] Parameter count is
+<code>stable_hash_v2</code>. The new bWIN comparison freshly scores both checkpoints on the five people
+held out by both, preserving their original training splits. That narrow common
+subset does not replace a full retraining/evaluation under one shared policy;
+see the linked bWIN release for the matched result.]] Parameter count is
 the axis that grew monotonically here; the forecast score is not, and no arrangement
 of these four numbers makes it so.</p>
 
@@ -528,10 +540,9 @@ would take 5.1 hours and are not baselines a claim can rest on.]] One gate is no
 reachable at any budget: it requires recovery of direction, delay, gain, dose and
 state-dependence from a <em>prospective</em> perturbation study, and three of those
 five are unobtainable in principle from the retrospective stimulation data that
-exists.[[src: reports/PROGRAMME_ASSESSMENT.md]] And the single most useful thing
-that could be done next costs one evaluation rather than a run: re-score 003 and
-004 under one split policy, and either reproduce the one positive result this
-programme has or retract it.</p>
+exists.[[src: reports/PROGRAMME_ASSESSMENT.md]] The new <a href="releases/bwin-eeg-001.html">bWIN release</a>
+now supplies a fresh five-person common-holdout comparison of 003 and 004.
+A common-split retraining remains a different, larger experiment.</p>
 
 <p>Stated at the granularity someone could check, with the public artifacts in
 the same table as the parts they are made of. Every row is a thing you could run

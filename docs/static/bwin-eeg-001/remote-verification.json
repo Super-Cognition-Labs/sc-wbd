@@ -1,0 +1,21 @@
+{
+  "repository": "brandonin/bwin-eeg-001",
+  "revision": "d86f3c585ac67b12add3820c60ceabf5e3f6bbde",
+  "public": true,
+  "payload_files_verified": 47,
+  "raw_data_used": false,
+  "cwd": "/tmp",
+  "isolated_python": true,
+  "mean_max_absolute_error": 0.0,
+  "variance_max_absolute_error": 0.0,
+  "dependencies": {
+    "numpy": "2.5.2",
+    "scipy": "1.18.0",
+    "torch": "2.13.0",
+    "array-api-compat": "1.15.0",
+    "h5py": "3.16.0",
+    "jsonschema": "4.26.0"
+  },
+  "payload_manifest_sha256": "1d5ef1914df092063c2b5eaf187b7bc4e332da7290e6c4a071f372daffbbc57c",
+  "wheel_sha256": "eab39227032bec42270beac9d59e6c6f7165a7db000d184022962b257438edb3"
+}

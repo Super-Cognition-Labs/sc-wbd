@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>bWIN EEG 001 — matched forecasts, community comparisons and IBM-1 handoff</title>
+<meta name="description" content="A reproducible EEG forecasting release from WIN, with matched statistical, neural and historical SC-WBD comparisons and a separate account of broader community models.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="bWIN EEG 001 — matched forecasts, community comparisons and IBM-1 handoff">
+<meta property="og:description" content="A reproducible EEG forecasting release from WIN, with matched statistical, neural and historical SC-WBD comparisons and a separate account of broader community models.">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="../static/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='none'/><rect x='2' y='9' width='2' height='5'/><rect x='5.5' y='5' width='2' height='9'/><rect x='9' y='7' width='2' height='7'/><rect x='12.5' y='2' width='2' height='12'/></svg>">
+  <script defer src="../static/brain.js"></script>
+  <script defer src="../static/arch.js"></script>
+  <script defer src="../static/reveal.js"></script>
+</head>
+<body class="">
+
+<div class="scrollprog" id="scrollprog" aria-hidden="true"></div>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <a class="wordmark" href="../index.html">SC&#8209;WBD</a>
+    <nav>
+        <a href="../index.html" class="active">Overview</a>
+        <a href="../engineering/index.html">Engineering</a>
+        <a href="../possibilities/index.html">Possibilities</a>
+        <a href="../attribution.html">Attribution</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<nav class="railnav" aria-label="Sections on this page">
+  <ol>
+    <li><a href="#the-task-every-measured-row-receives" data-rail="the-task-every-measured-row-receives"><span class="rail-label">The task every measured row r…</span></a></li>
+    <li><a href="#new-measurements-on-the-matched-task" data-rail="new-measurements-on-the-matched-task"><span class="rail-label">New measurements on the match…</span></a></li>
+    <li><a href="#what-the-community-comparison-means" data-rail="what-the-community-comparison-means"><span class="rail-label">What the community comparison…</span></a></li>
+    <li><a href="#what-ibm-1-can-take-from-this-release" data-rail="what-ibm-1-can-take-from-this-release"><span class="rail-label">What IBM-1 can take from this…</span></a></li>
+    <li><a href="#use-the-checkpoint" data-rail="use-the-checkpoint"><span class="rail-label">Use the checkpoint</span></a></li>
+  </ol>
+</nav>
+
+  <div class="wrap">
+    <div class="pagehead">
+      <h1>bWIN EEG 001: a matched EEG forecasting release</h1>
+      <p class="standfirst">24 measured samples in; 64 future samples out. One task, explicit splits, reusable weights.</p>
+
+    </div>
+<div class="prose">
+<section class="chapter chapter-intro" id="releases-bwin-eeg-001-top">
+
+
+<p class="lede">bWIN EEG 001 turns a short segment of 64-channel EEG into a
+forecast of the next 512 milliseconds. It is a task-specific release from WIN,
+registered as <code>win-002</code>, with artifact
+<code>win-002-eeg-model</code>. Its relation to SC-WBD is tested on a shared EEG
+forecasting task; the earlier multimodal checkpoints retain their own scope.</p>
+
+<p><a href="https://huggingface.co/brandonin/bwin-eeg-001">Checkpoint, source wheel and model card</a> ·
+<a href="https://huggingface.co/brandonin/bwin-eeg-001/blob/main/REPORT.md">Full comparative report</a> ·
+<a href="#ibm-handoff">Lessons for IBM-1</a></p>
+</section>
+<section class="chapter" id="the-task-every-measured-row-receives">
+<h2>The task every measured row receives</h2>
+
+
+<table>
+<thead><tr><th>Contract</th><th>Locked value</th></tr></thead>
+<tbody>
+<tr><td data-label="Contract">Signal</td><td data-label="Locked value">EEGMMIDB, canonical 64-channel montage, resampled to 125 Hz</td></tr>
+<tr><td data-label="Contract">Observed context</td><td data-label="Locked value">24 samples, or 192 ms</td></tr>
+<tr><td data-label="Contract">Forecast</td><td data-label="Locked value">64 future samples, or 512 ms, for every channel</td></tr>
+<tr><td data-label="Contract">Primary split</td><td data-label="Locked value">67 training, 17 validation and 25 test participants</td></tr>
+<tr><td data-label="Contract">Historical common subset</td><td data-label="Locked value">Five participants held out by both SC-WBD-003 and SC-WBD-004</td></tr>
+<tr><td data-label="Contract">New neural comparators</td><td data-label="Locked value">EEGNet-style and ShallowConvNet-style forecasting adaptations, trained from random initialization</td></tr>
+</tbody>
+</table>
+
+<p><strong>Horizon correction.</strong> The historical setting
+<code>data.window = 64</code> denotes the future target length. Subtracting the
+24 context samples from it would incorrectly produce a 40-sample forecast.
+This comparison evaluates 24 context samples followed by 64 future samples.
+Historical scores elsewhere on this site keep their own evaluation labels.</p>
+
+<p>The cached signal uses offline zero-phase filtering, whole-recording
+resampling, robust scaling and rejection statistics. The model receives context
+only, but this preprocessing can use later samples in the same recording.
+These measurements describe forecasting on that processed signal, not an
+end-to-end causal raw-EEG stream.</p>
+
+<p>The fitting budget was amended from a 10-epoch community pilot to 50 epochs
+for every newly trained neural model. The pilot had already evaluated test data;
+although the 50-epoch decision preceded inspection of those pilot scores,
+this release does not call the final test previously untouched. The checkpoint
+selection criterion within each final fit remains validation MSE.</p>
+</section>
+<section class="chapter tinted" id="new-measurements-on-the-matched-task">
+<h2>New measurements on the matched task</h2>
+
+<div id="matched-results">
+<p>bWIN improves on zero prediction on the 25-person test panel. Its
+mean-participant R² is <strong>0.065248</strong>; however, AR16, VAR4 and both
+freshly trained community adapters have lower average MSE and Gaussian NLL.
+The EEGNet adaptation's advantage is supported by paired participant intervals
+for both error and density. This release establishes a working mechanistic
+forecasting artifact, with no claim that it is the best predictor.</p>
+
+<table><thead><tr><th>Primary model, 25 people</th><th>MSE ↓</th><th>Gaussian NLL ↓</th><th>Mean-person R² ↑</th></tr></thead><tbody>
+<tr><td data-label="Primary model, 25 people">bWIN</td><td data-label="MSE ↓">4.497662</td><td data-label="Gaussian NLL ↓">2.169866</td><td data-label="Mean-person R² ↑">0.065248</td></tr>
+<tr><td data-label="Primary model, 25 people">EEGNet forecast adapter</td><td data-label="MSE ↓">4.365396</td><td data-label="Gaussian NLL ↓">2.155938</td><td data-label="Mean-person R² ↑">0.095086</td></tr>
+<tr><td data-label="Primary model, 25 people">ShallowConvNet forecast adapter</td><td data-label="MSE ↓">4.424024</td><td data-label="Gaussian NLL ↓">2.162101</td><td data-label="Mean-person R² ↑">0.084709</td></tr>
+<tr><td data-label="Primary model, 25 people">AR16</td><td data-label="MSE ↓">4.490870</td><td data-label="Gaussian NLL ↓">2.154648</td><td data-label="Mean-person R² ↑">0.082119</td></tr>
+<tr><td data-label="Primary model, 25 people">VAR4</td><td data-label="MSE ↓">4.443725</td><td data-label="Gaussian NLL ↓">2.153318</td><td data-label="Mean-person R² ↑">0.085790</td></tr>
+<tr><td data-label="Primary model, 25 people">Zero</td><td data-label="MSE ↓">4.953392</td><td data-label="Gaussian NLL ↓">2.219462</td><td data-label="Mean-person R² ↑">-0.005914</td></tr>
+<tr><td data-label="Primary model, 25 people">Persistence</td><td data-label="MSE ↓">9.016314</td><td data-label="Gaussian NLL ↓">2.489331</td><td data-label="Mean-person R² ↑">-0.828763</td></tr>
+<tr><td data-label="Primary model, 25 people">Context mean</td><td data-label="MSE ↓">7.246531</td><td data-label="Gaussian NLL ↓">2.400386</td><td data-label="Mean-person R² ↑">-0.435034</td></tr>
+</tbody></table>
+
+<p>bWIN minus EEGNet MSE is <strong>+0.132266</strong>, with paired 95% interval
+<strong>[+0.063973, +0.203103]</strong>; negative would favor bWIN. Against zero,
+the difference is <strong>−0.455730 [−0.724394, −0.215209]</strong>.
+The primary MSE intervals against AR16, VAR4 and ShallowConvNet cross zero;
+their lower means are not decisive separation. VAR4's NLL advantage does have
+an interval excluding zero. The full report gives every comparison, using
+2,000 paired participant resamples. These pointwise intervals do not cover
+seed or hyperparameter uncertainty and are not adjusted for multiple comparisons.</p>
+
+<figure>
+<a href="../../static/bwin-eeg-001/comparison.svg"><img
+src="../../static/bwin-eeg-001/comparison.svg"
+alt="Measured bWIN EEG comparison: primary error and density, context controls, participant R-squared values and all fifty validation epochs. bWIN improves on zero but all four fitted alternatives have lower average error."
+style="width:100%;height:auto" loading="lazy"></a>
+<figcaption>Actual saved results. The error bars are each model's participant-bootstrap
+95% interval, not intervals of paired differences. Open the image to zoom;
+<a href="../../static/bwin-eeg-001/comparison-data.json">exact plotted values and source hashes</a>.</figcaption>
+</figure>
+
+<p>The bWIN model has 329,472 network parameters plus 64 fitted horizon-variance
+values. It selected epoch 18 of 50; EEGNet and ShallowConvNet selected 49 and 42.
+All eight bWIN tensor groups have nonzero recorded data gradients and selected
+weight movement. That proves exercised learning, not recovered physiological
+parameters. The figure exposes bWIN's later validation instability. These
+models are not capacity matched, and bWIN batches within people while the
+community adapters mix people within batches.</p>
+
+<h3>A fresh comparison with SC-WBD-003 and 004</h3>
+<p>This panel uses only S026, S033, S034, S066 and S082, held out by both
+historical checkpoints. It is distinct from their original full-holdout scores.</p>
+<table><thead><tr><th>Same five people</th><th>MSE ↓</th><th>Gaussian NLL ↓</th><th>Mean-person R² ↑</th></tr></thead><tbody>
+<tr><td data-label="Same five people">bWIN</td><td data-label="MSE ↓">4.143927</td><td data-label="Gaussian NLL ↓">2.127739</td><td data-label="Mean-person R² ↑">0.070627</td></tr>
+<tr><td data-label="Same five people">SC-WBD-003</td><td data-label="MSE ↓">3.913787</td><td data-label="Gaussian NLL ↓">1.990275</td><td data-label="Mean-person R² ↑">0.117216</td></tr>
+<tr><td data-label="Same five people">SC-WBD-004</td><td data-label="MSE ↓">4.034619</td><td data-label="Gaussian NLL ↓">2.043563</td><td data-label="Mean-person R² ↑">0.102808</td></tr>
+</tbody></table>
+<p>bWIN minus SC-WBD-003 MSE is +0.230141 [+0.053943, +0.420776]; minus
+SC-WBD-004 is +0.109308 [+0.026649, +0.204017]. Both historical checkpoints
+perform better on this narrow sample. Five people and different original
+training regimes do not support a universal model ranking. Historical inference
+retains native heteroscedastic variance; the new models fit horizon-only variance
+on training residuals. Checkpoint-specific posterior normalization and the 004
+individualizer are preserved; neither historical checkpoint is retrained.</p>
+
+<h3>Context controls</h3>
+<p>Mean-participant MSE rises from 4.497662 for intact bWIN to 4.980723 with zero
+context, 4.764398 after time reversal, 5.094081 after channel permutation,
+5.513663 after cross-window permutation and 4.964215 at untrained initialization.
+All twelve registered control directions agree. Those hypotheses establish basic
+predictive/context use; they do not claim bWIN wins against the trained models.
+Input interventions are not refitted capacity-matched pathway ablations.</p>
+</div>
+</section>
+<section class="chapter" id="what-the-community-comparison-means">
+<h2>What the community comparison means</h2>
+
+
+<p><a href="https://doi.org/10.1088/1741-2552/aace8c">EEGNet</a> and
+<a href="https://doi.org/10.1002/hbm.23730">ShallowConvNet</a> supply established
+EEG classification architectures. Our forecast adapters replace their classifiers
+with multichannel linear outputs and shorten pooling to fit the available context.
+EEGNet retains temporal, depthwise spatial and separable convolutions;
+ShallowConvNet retains temporal and spatial filtering followed by square,
+mean and log operations. Each receives exactly the same observed samples.
+These are newly trained adaptations, not the authors' pretrained models or a
+reproduction of their classification experiments.
+<a href="https://github.com/vlawhern/arl-eegmodels/blob/4a512e503198db2010848813ead9afbf8cd54c97/EEGModels.py">Pinned architecture reference</a>.</p>
+
+<p>The following models answer related questions and have different input or
+training contracts. They provide context for the release, with no numerical rank
+assigned on this forecasting task.</p>
+
+<table>
+<thead><tr><th>Community model</th><th>Established task and available implementation</th><th>Why it is contextual here</th></tr></thead>
+<tbody>
+<tr><td data-label="Community model"><a href="https://github.com/935963004/LaBraM">LaBraM</a></td>
+<td data-label="Established task and available implementation">Masked EEG representations for downstream decoding. The official repository
+provides a base checkpoint and tokenizer, with MIT-licensed code.</td>
+<td data-label="Why it is contextual here">The documented pipeline uses 200 Hz input and one-second channel patches.
+Our 192 ms context is shorter than one patch. Padding it into a token would
+measure a new adapter with a severe input mismatch. The pretraining collection
+also requires an overlap audit before claims of unseen participants.</td></tr>
+<tr><td data-label="Community model"><a href="https://github.com/SPOClab-ca/BENDR">BENDR</a></td>
+<td data-label="Established task and available implementation">Contrastive EEG representation learning. Official encoder/contextualizer
+weights are linked in the <a href="https://github.com/SPOClab-ca/BENDR/releases/tag/v0.1-alpha">pretrained release</a>.</td>
+<td data-label="Why it is contextual here">A representation encoder needs a newly fitted forecast head and its own
+sampling/montage policy. The official downstream protocol includes EEGMMIDB;
+a downstream-fitted checkpoint cannot be assumed to have excluded this benchmark's
+test people. Redistribution terms were not established in this audit.</td></tr>
+<tr><td data-label="Community model"><a href="https://github.com/czlwang/BrainBERT">BrainBERT</a></td>
+<td data-label="Established task and available implementation">Self-supervised intracranial representations; the official repository links
+trained weights and Brain Treebank data.</td>
+<td data-label="Why it is contextual here">The expected input is Laplacian-referenced intracranial recordings, with
+spectral preprocessing. Scalp EEG and a 192 ms context require a different
+adapter and a new test. Redistribution terms were not established here.</td></tr>
+<tr><td data-label="Community model"><a href="https://docs.thevirtualbrain.org/">The Virtual Brain</a></td>
+<td data-label="Established task and available implementation">A brain-network simulation platform with biologically structured connectivity,
+released as GPLv3 software.</td>
+<td data-label="Why it is contextual here">A simulator needs an observation map, state-estimation and fitting protocol
+before it becomes this conditional EEG forecaster. Its simulation capabilities
+cannot be ranked using a decoding accuracy from a different task.</td></tr>
+</tbody>
+</table>
+
+<p>Source details:
+<a href="https://github.com/935963004/LaBraM/blob/main/README.md">LaBraM preprocessing</a>,
+<a href="https://github.com/935963004/LaBraM/blob/main/modeling_finetune.py">LaBraM patches</a>,
+<a href="https://github.com/935963004/LaBraM/blob/main/LICENSE">LaBraM license</a>,
+<a href="https://github.com/SPOClab-ca/BENDR/blob/main/configs/downstream_datasets.yml">BENDR downstream datasets</a>,
+<a href="https://github.com/czlwang/BrainBERT/blob/master/README.md">BrainBERT input and weights</a>,
+<a href="https://www.thevirtualbrain.org/tvb/zwei/brainsimulator-software">TVB distribution and license</a>.
+Checked September 5, 2026.</p>
+</section>
+<section class="chapter tinted" id="what-ibm-1-can-take-from-this-release">
+<h2>What IBM-1 can take from this release</h2>
+
+<div id="ibm-handoff">
+<p>The transferable pattern is a named use, an explicit input contract, selected
+mechanisms, fitted uncertainty, held people, alternatives and a reloadable
+artifact. WIN uses its own mechanisms; IBM-1 supplied a useful materialization
+pattern, not imported equations or runtime code.</p>
+<table><thead><tr><th>Earlier WIN integration</th><th>Measured lesson</th><th>Next practical step</th></tr></thead><tbody>
+<tr><td data-label="Earlier WIN integration">Audio → MEG recurrent state</td><td data-label="Measured lesson">Selected R² −0.001035; all recurrent arms lose to zero. The prior small MLP scores +0.000337.</td><td data-label="Next practical step">Improve optimization and capacity controls before claiming recurrence adds predictive value.</td></tr>
+<tr><td data-label="Earlier WIN integration">Sleep spectra and neural/temporal features</td><td data-label="Measured lesson">Simple band-power balanced accuracy 0.690114 beats integrated 0.668703 on four test people.</td><td data-label="Next practical step">Keep the simple baseline, investigate N1 errors, and evaluate external participants.</td></tr>
+<tr><td data-label="Earlier WIN integration">Task → calibrated BOLD</td><td data-label="Measured lesson">Mechanistic R² 0.063090; canonical HRF 0.046543; ten-second shifted drive 0.095520.</td><td data-label="Next practical step">Resolve timing specificity before interpreting fitted physiology. Separate fitting does not solve joint shared-state interference.</td></tr>
+<tr><td data-label="Earlier WIN integration">Past → future EEG</td><td data-label="Measured lesson">bWIN beats zero, but fitted alternatives and both historical checkpoints on their common subset perform better.</td><td data-label="Next practical step">Use those alternatives as practical references while testing which dynamics improve stable held-out prediction.</td></tr>
+</tbody></table>
+<p>These tasks use different targets and metrics. No cross-task average or single
+jointly trained multimodal checkpoint is implied. Gradients and parameter
+movement establish exercised computation; they do not identify a biological
+mechanism. Building more mechanisms remains useful engineering, while each
+predictive claim must earn its own evidence.</p>
+</div>
+</section>
+<section class="chapter" id="use-the-checkpoint">
+<h2>Use the checkpoint</h2>
+
+<div id="checkpoint-handoff">
+<p><a href="https://huggingface.co/brandonin/bwin-eeg-001">Download bWIN EEG 001</a>
+and follow its model card to install the supplied source wheel and pinned
+dependencies. Inference needs no training dataset or predecessor repository.</p>
+<p>Public revision
+<a href="https://huggingface.co/brandonin/bwin-eeg-001/tree/d86f3c585ac67b12add3820c60ceabf5e3f6bbde"><code>d86f3c585ac67b12add3820c60ceabf5e3f6bbde</code></a>
+was downloaded independently: all 47 payload file hashes matched. Installing
+its wheel and running isolated Python outside the repository reproduced the
+synthetic mean and variance with maximum absolute error 0.0, without raw data.
+<a href="../../static/bwin-eeg-001/remote-verification.json">Download the verification receipt</a>.</p>
+<p>Supply a finite floating <code>context</code> array shaped
+<code>(batch, 24, 64)</code> at 125 Hz, already preprocessed and ordered exactly
+as the saved channel list. Output mean is <code>(batch, 64, 64)</code>;
+variance is <code>(1, 64, 1)</code> in the same scaled units. The geometry is a
+constructed template, not participant digitization. Inference does not perform
+raw EEG preprocessing.</p>
+<p>The package includes selected weights, geometry, source fingerprints, a
+synthetic replay example, the comparative report and this figure. The example
+contains no participant EEG. Source and dependency mismatches are refused.
+Read the <a href="https://huggingface.co/brandonin/bwin-eeg-001/blob/main/INFERENCE.md">inference contract</a>
+and <a href="https://huggingface.co/brandonin/bwin-eeg-001/blob/main/PROTOCOL_AMENDMENTS.md">protocol history</a>
+before using the results.</p>
+</div>
+
+<p><a href="../index.html">SC-WBD overview and historical releases</a></p>
+</section>
+</div>
+
+  </div>
+</main>
+
+<footer class="sitefoot">
+  <div class="wrap">
+    <p class="foot-legal">Copyright &copy; 2026 SuperCognition Labs. Not a
+    medical device and not clinical advice.</p>
+  </div>
+</footer>
+
+</body>
+</html>

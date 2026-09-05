@@ -10,10 +10,11 @@ Read this after `scratch/<TASK>.md` and before starting: it is the two-minute an
 
 <!-- BEGIN GENERATED -->
 
-**18 notes** · 0 blocked · 6 live decisions · 8 standing findings · 4 open questions
+**19 notes** · 0 blocked · 7 live decisions · 8 standing findings · 4 open questions
 
 ### Live decisions
 
+- [The bWIN release separates matched forecast scores from community task context](decisions/2026-09-05-bwin-release-keeps-matched-and-contextual-comparisons-separate.md) — `active` · `BWIN_RELEASE`
 - [Chose notes/ + scratch/ beside reports/, rather than folding them together](decisions/2026-08-14-notes-beside-reports-and-scratch-not-instead-of-them.md) — `active` · `CLAIM_GATES`
 - [G4 is re-specified to test pose discrimination, which is what SC-WBD does](decisions/2026-08-14-g4-tests-pose-discrimination-not-causal-identifiability.md) — `active` · `CLAIM_GATES`
 - [Decided what a wall-clock exhaustion would mean before the run reached it, not at hour 45](decisions/2026-08-11-decide-a-wall-clock-exhaustion-before-hour-45.md) — `active`
